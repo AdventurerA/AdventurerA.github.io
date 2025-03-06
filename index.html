@@ -35,16 +35,30 @@
             border-radius: 10px;
             width: 60%;
         }
+        .red{
+            color:red;
+        }
     </style>
 </head>
 <body>
     <canvas id="stars"></canvas>
     <div class="container">
-        <div class="section" id="about">About Me
-            <div>I'm currently working in the food industry, as a Master Data Specialist <br> my linkdin is <a href="https://uk.linkedin.com/in/mitchell-c-223577236"> Right here.</a>
+        <div class="section" id="about"><h1>About Me</h1>
+            <div>I'm currently working in the food industry, as a Master Data Specialist <br> my linkdin is <a class="red" href="https://uk.linkedin.com/in/mitchell-c-223577236"> Right here.</a>
+                <br>I am currently looking for work in a few fields, they are<br><br>
+                    <li>Astronomy</li>
+                    <li>Physics</li>
+                    <li>Data</li>
+                    <li>Programming</li>
+                    <li>Software</li>
+                    <br>
+                <br>
+                I like to challenge myself with anything, from learning a new language, to studying advanced mathematics.
+                <br>
+                <br>
+            there is a bit more about me on my linkdin page, so feel free to have a browse, or have fun with these stars.
             </div>
         </div>
-        <div class="section" id="ambitions">Ambitions</div>
     </div>
     <script>
         const canvas = document.getElementById("stars");
@@ -57,8 +71,10 @@
                 this.x = Math.random() * w;
                 this.y = Math.random() * h;
                 this.size = Math.random() * 2;
+                this.originalSize = this.size;
                 this.speedX = Math.random() * 0.5 - 0.25;
                 this.speedY = Math.random() * 0.5 - 0.25;
+                this.brightness = 1;
             }
             update() {
                 this.x += this.speedX;
@@ -67,7 +83,7 @@
                 if (this.y < 0 || this.y > h) this.speedY *= -1;
             }
             draw() {
-                ctx.fillStyle = "white";
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -98,6 +114,11 @@
                 if (distance < 100) {
                     star.x += dx * 0.02;
                     star.y += dy * 0.02;
+                    star.size = star.originalSize + 1;
+                    star.brightness = 1.5;
+                } else {
+                    star.size = star.originalSize;
+                    star.brightness = 1;
                 }
             });
         });
