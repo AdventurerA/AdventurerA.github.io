@@ -34,9 +34,18 @@
             padding: 20px;
             border-radius: 10px;
             width: 60%;
+            position: relative;
+            z-index: 10;
         }
-        .red{
-            color:red;
+        .red {
+            color: red;
+        }
+        .shooting-star {
+            position: fixed;
+            color: white;
+            font-size: 18px;
+            white-space: nowrap;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -44,19 +53,17 @@
     <canvas id="stars"></canvas>
     <div class="container">
         <div class="section" id="about"><h1>About Me</h1>
-            <div>I'm currently working in the food industry, as a Master Data Specialist <br> my linkdin is <a class="red" href="https://uk.linkedin.com/in/mitchell-c-223577236"> Right here.</a>
-                <br>I am currently looking for work in a few fields, they are<br><br>
+            <div>I'm currently working in the food industry, as a Master Data Specialist <br> my LinkedIn is <a class="red" href="https://uk.linkedin.com/in/mitchell-c-223577236"> Right here.</a>
+                <br>I am currently looking for work in a few fields, they are:<br><br>
                     <li>Astronomy</li>
                     <li>Physics</li>
                     <li>Data</li>
                     <li>Programming</li>
                     <li>Software</li>
-                    <br>
-                <br>
+                <br><br>
                 I like to challenge myself with anything, from learning a new language, to studying advanced mathematics.
-                <br>
-                <br>
-            there is a bit more about me on my linkdin page, so feel free to have a browse, or have fun with these stars.
+                <br><br>
+                There is a bit more about me on my LinkedIn page, so feel free to have a browse, or have fun with these stars.
             </div>
         </div>
     </div>
@@ -64,32 +71,35 @@
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = [];
+        let shootingStars = [];
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
+        const skills = ["JavaScript", "Python", "SQL", "Machine Learning", "Astrophysics", "Data", "Automation", "Advanced Mathematics"];
+
         class Star {
             constructor() {
+                this.reset();
+            }
+            reset() {
                 this.x = Math.random() * w;
-                this.y = Math.random() * h;
+                this.y = Math.random() * (h - 150);
                 this.size = Math.random() * 2;
-                this.originalSize = this.size;
                 this.speedX = Math.random() * 0.5 - 0.25;
                 this.speedY = Math.random() * 0.5 - 0.25;
-                this.brightness = 1;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.x < 0 || this.x > w) this.speedX *= -1;
-                if (this.y < 0 || this.y > h) this.speedY *= -1;
+                if (this.x < 0 || this.x > w || this.y < 0 || this.y > h - 150) this.reset();
             }
             draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
+                ctx.fillStyle = "white";
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
-        function init() {
+        function initStars() {
             stars = [];
             for (let i = 0; i < 150; i++) stars.push(new Star());
         }
@@ -101,28 +111,39 @@
             });
             requestAnimationFrame(animate);
         }
+        function createShootingStar() {
+            const skill = skills[Math.floor(Math.random() * skills.length)];
+            const star = document.createElement("div");
+            star.classList.add("shooting-star");
+            star.textContent = skill;
+            document.body.appendChild(star);
+            let x = Math.random() * w;
+            let y = Math.random() * h * 0.5;
+            let speed = 2 + Math.random() * 3;
+            star.style.top = y + "px";
+            star.style.left = x + "px";
+            let interval = setInterval(() => {
+                x += speed * 2;
+                y += speed;
+                star.style.top = y + "px";
+                star.style.left = x + "px";
+                if (x > w || y > h) {
+                    clearInterval(interval);
+                    star.remove();
+                }
+            }, 20);
+        }
+        setInterval(() => {
+            if (Math.random() < 0.2) createShootingStar(); // 20% chance every few seconds
+        }, 3000);
+
         window.addEventListener("resize", () => {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            init();
+            initStars();
         });
-        document.addEventListener("mousemove", e => {
-            stars.forEach(star => {
-                let dx = star.x - e.clientX;
-                let dy = star.y - e.clientY;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 100) {
-                    star.x += dx * 0.02;
-                    star.y += dy * 0.02;
-                    star.size = star.originalSize + 1;
-                    star.brightness = 1.5;
-                } else {
-                    star.size = star.originalSize;
-                    star.brightness = 1;
-                }
-            });
-        });
-        init();
+
+        initStars();
         animate();
     </script>
 </body>
