@@ -5,7 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mitchell Challifour — Portfolio</title>
 
+  <!-- External CSS (GitHub Pages paths are case-sensitive; your username path looks correct) -->
   <link rel="stylesheet" href="https://AdventurerA.github.io/styles.css" />
+
+  <!-- Minimal fallback styles in case external CSS fails to load -->
+  <style>
+    /* Fallback only; your external CSS can override these */
+    html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: Arial, sans-serif; }
+    /* DO NOT hide overflow on body if you want scrolling */
+    body { overflow: auto; }
+    canvas#stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+    .container { position: relative; width: min(1000px, 92vw); margin: 0 auto; padding: 64px 0 96px; display: flex; flex-direction: column; gap: 28px; }
+    section { background: rgba(255,255,255,0.08); padding: 20px; border-radius: 10px; }
+    h1, h2 { margin: 0 0 12px; }
+    ul { margin: 8px 0 0 22px; }
+    a.red { color: #ff5a5a; }
+    .btn { display: inline-block; margin-left: 8px; padding: 8px 14px; border-radius: 6px; color: #111; background: #ffd24d; text-decoration: none; }
+    .btn:hover { filter: brightness(1.05); }
+  </style>
 </head>
 <body>
   <canvas id="stars" aria-hidden="true"></canvas>
@@ -56,6 +73,7 @@
     </section>
   </main>
 
+  <!-- External JS (make sure script draws within the canvas bounds and resizes) -->
   <script src="https://AdventurerA.github.io/script.js"></script>
 </body>
 </html>
